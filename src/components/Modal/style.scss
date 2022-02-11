@@ -1,0 +1,43 @@
+.modal {
+  &_wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.301);
+  }
+
+  &_body {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  &_header,
+  &_main {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+  }
+
+  &_close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: rgba(168, 124, 83, 0.877);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: all .3s ease;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.5);
+      transform: translateY(-3px);
+    }
+  }
+}

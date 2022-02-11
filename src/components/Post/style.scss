@@ -1,0 +1,29 @@
+.post {
+  &-body {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  &-id {
+
+  }
+  
+  &-autor::first-letter, 
+  &-text::first-letter,
+  &-title::first-letter {
+    text-transform: uppercase;
+  }
+
+  &-title {
+    // text-transform: capitalize;
+  }
+
+  &-text {
+
+  }
+  &-autor {
+
+  }
+}
+
