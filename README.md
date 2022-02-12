@@ -1,5 +1,9 @@
 # Getting Started with Create React App
 
+## Download project
+```
+git clone https://github.com/RomanMorf/engeious.git
+```
 
 ## Available Scripts
 

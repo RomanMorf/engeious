@@ -1,21 +1,22 @@
 import React from 'react';
 import './style.scss'
+import usePost from '../../hooks/Posts';
 
 function EditorModal(props) {
+  const { 
+    postsData,
+    setPostsData,
+    createPost,
+    deletePost,
+    updatePost 
+  } = usePost()
+
 
   function closeModalFunc(event) {
     if (event.target.className === 'modal_wrapper' || event.target.className === 'modal_close' || event.target.className === 'modal_btn close' ) {
       props.closeModal(false)
     }
-
   }
-
-  function saveModalFunc(event) {
-  }
-
-  function deleteModalFunc(event) {
-  }
-  console.log(props);
 
   return (
     <div className='modal_wrapper' onClick={(e)=> closeModalFunc(e)}>
@@ -32,9 +33,16 @@ function EditorModal(props) {
         </div>
         }
         <div className='modal_footer'>
-          <button className='modal_btn' onClick={(e)=> saveModalFunc(e)}>Save</button>
-          <button className='modal_btn close' onClick={(e)=> closeModalFunc(e)}>Cencel</button>
-          <button className='modal_btn' onClick={(e)=> deleteModalFunc(e)}>Delete</button>
+        <button className='modal_btn' 
+          onClick={() => createPost({
+            id: 55555, 
+            title: 'some title', 
+            body: 'some body text', 
+            userId: 5,
+            }
+          )}>Create post</button>
+          <button className='modal_btn' onClick={()=> updatePost(props.post.id)}>Save post</button>
+          <button className='modal_btn' onClick={()=> deletePost(props.post.id)}>Delete post</button>
         </div>
         <button className='modal_close' onClick={(e)=> closeModalFunc(e)}>X</button>
       </div>

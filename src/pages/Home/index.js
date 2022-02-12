@@ -6,12 +6,22 @@ import { getUsers } from '../../api/getUsers';
 
 import EditorModal from '../../components/EditorModal';
 
+import usePost from '../../hooks/Posts';
+
 function Home() {
+  const { 
+    postsData,
+    setPostsData,
+    createPost,
+    deletePost,
+    updatePost 
+  } = usePost()
+
   const [showModal, setShowModal] = useState(false)
   const [showLoader, setShowLoader] = useState(true)
-  const [postsData, setPostsData] = useState([])
   const [usersData, setUsersData] = useState([])
-  const [postForEdit, setPostForEdit] = useState({})
+
+  const [postForEdit, setPostForEdit] = useState(0)
 
   function closeModal() {
     setShowModal(false)
@@ -25,8 +35,8 @@ function Home() {
       const users = await getUsers()
       await setUsersData(users)
 
-      // console.log(users,' users');
-      // console.log(posts,' users');
+      console.log(users,' users');
+      console.log(posts,' users');
     } catch (error) {
       throw error
     }
@@ -35,7 +45,7 @@ function Home() {
 
   return (
     <div>
-      {showModal && <EditorModal post={ postsData[0] } closeModal={closeModal}/> }
+      {showModal && <EditorModal post={ postsData[postForEdit] } closeModal={closeModal}/> }
       <button onClick={()=> setShowModal(true)}>show Modal</button>
       <div className='post-wrapper'>
         {

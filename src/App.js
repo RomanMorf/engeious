@@ -1,15 +1,13 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import RoutesComponent from './routes/'
 import { HeaderComponent } from "./components/Header";
 
-const App = ()=> {
+export default function App() {
   return (
     <Router>
       <HeaderComponent />
-      <RoutesComponent/>
+      <RoutesComponent />
     </Router>
   )
-}
-
-export default App;
+};
