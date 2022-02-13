@@ -5,21 +5,22 @@ import { getPosts } from '../../api/getPosts';
 import { getUsers } from '../../api/getUsers';
 import EditorModal from '../../components/EditorModal';
 import usePost from '../../hooks/Posts';
+import useUser from '../../hooks/Users';
 import { useModalState } from '../../context/Modal';
 import { usePostState } from '../../context/Posts';
+import { useUserState } from '../../context/Users';
 
 function Home() {
-  const {showModal, setShowModal} = useModalState()
-  const {posts, setPosts} = usePostState()
+  const { showModal, setShowModal } = useModalState()
+  const { posts, setPosts } = usePostState()
+  const { users, setUsers } = useUserState()
 
   const { 
     currentPost,
     setCurrentPost,
     fetchPosts,
   } = usePost()
-
-  const [showLoader, setShowLoader] = useState(true)
-  const [usersData, setUsersData] = useState([])
+  const { fetchUsers } = useUser()
 
   function closeModal() {
     setShowModal(false)
@@ -33,9 +34,7 @@ function Home() {
   useEffect( async ()=> {
     try {
       await fetchPosts()
-
-      const users = await getUsers()
-      await setUsersData(users)
+      await fetchUsers()
 
     } catch (error) {
       throw error
@@ -43,30 +42,24 @@ function Home() {
 
   }, [])
 
-  useEffect( ()=> {
-    console.log(posts, 'posts from home');
-  }, [posts])
-
   return (
     <div>
-        {showModal && <EditorModal post={currentPost} closeModal={closeModal}/> }
+      {showModal && <EditorModal post={currentPost} closeModal={closeModal}/> }
 
-        <button onClick={ ()=> setShowModal(true) }>show Modal</button>
-
-        <div className='post-wrapper'>
-          { posts &&
-            posts.map((post, index)=> {
-              return (
-                index < 200 && 
-                <Post 
-                  post={post}  
-                  key={'post' + post.id } 
-                  onEditPost={(postId) => chooseCurrentPost(postId)}  
-                />
-              )
-            })
-          }
-        </div>
+      <div className='post-wrapper'>
+        { posts &&
+          posts.map((post, index)=> {
+            return (
+              index < 20 && 
+              <Post 
+                post={post}  
+                key={'post' + post.id } 
+                onEditPost={(postId) => chooseCurrentPost(postId)}  
+              />
+            )
+          })
+        }
+      </div>
     </div>
   )
 }
