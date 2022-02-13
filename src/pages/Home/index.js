@@ -45,7 +45,6 @@ function Home() {
   return (
     <div>
       {showModal && <EditorModal post={currentPost} closeModal={closeModal}/> }
-
       <div className='post-wrapper'>
         { posts &&
           posts.map((post, index)=> {

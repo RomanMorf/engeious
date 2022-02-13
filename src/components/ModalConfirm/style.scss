@@ -5,7 +5,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.301);
@@ -16,12 +16,19 @@
     background-color: #fff;
     border-radius: 10px;
     position: relative;
+    min-width: 30%;
+    max-width: 700px;
   }
 
   &_header,
   &_main {
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
+  }
+  &_footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 
   &_close {
@@ -36,8 +43,20 @@
     cursor: pointer;
 
     &:hover {
-      box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.5);
-      transform: translateY(-3px);
+      box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &_btn {
+    border: none;
+    border-radius: 3px;
+    background-color: rgba(168, 124, 83, 0.877);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: all .3s ease;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
     }
   }
 }
