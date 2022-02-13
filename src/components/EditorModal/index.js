@@ -1,16 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './style.scss'
 import usePost from '../../hooks/Posts';
 import { useModalState } from '../../context/Modal';
+import ModalConfirm from '../ModalConfirm' 
 
 function EditorModal(props) {
   const {showModal, setShowModal} = useModalState()
+  const [confirm, setConfirm] = useState(true)
 
   const { 
-    postsData,
-    currentPost,
-    setCurrentPost,
-    setPostsData,
     createPost,
     deletePost,
     updatePost 
@@ -32,6 +30,9 @@ function EditorModal(props) {
   return (
     <div className='modal_wrapper' onClick={(e)=> closeModalFunc(e)}>
       <div className='modal_body'>
+
+        {confirm && <ModalConfirm onCofirm onCancel onClose />}
+
         <div className='modal_header'>
           <h3>EditorModal</h3>
         </div> 

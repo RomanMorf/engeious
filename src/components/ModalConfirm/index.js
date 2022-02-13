@@ -5,7 +5,8 @@ function ModalConfirm(props) {
 
   function closeModalFunc(event) {
     if (event.target.className === 'modal_wrapper' || event.target.className === 'modal_close' ) {
-      props.closeModal(false)
+      props.onClose()
+      
     } else {
       return
     }
@@ -20,16 +21,15 @@ function ModalConfirm(props) {
   }
 
   return (
-    <div className='modal_wrapper' onClick={(e)=> closeModalFunc(e)}>
-      <div className='modal_body'>
-        <div className='modal_header'>
+    <div className='confirm_wrapper' onClick={(e)=> closeModalFunc(e)}>
+      <div className='confirm_wrapper_body'>
+        <div className='confirm_wrapper_header'>
           <h4>{ props.text }</h4>
         </div>
-        <div className='modal_footer'>
-          <button className='modal-btn' onClick={() => modalConfirm}>Подтвердить</button>
-          <button className='modal-btn' onClick={() => modalCancel}>Отмена</button>
+        <div className='confirm_wrapper_footer'>
+          <button className='confirm_wrapper-btn' onClick={() => modalConfirm}>Подтвердить</button>
+          <button className='confirm_wrapper-btn' onClick={() => modalCancel}>Отмена</button>
         </div>
-        <button className='modal_close' onClick={(e)=> closeModalFunc(e)}>X</button>
       </div>
     </div>
   )
