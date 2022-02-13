@@ -9,6 +9,7 @@ import useUser from '../../hooks/Users';
 import { useModalState } from '../../context/Modal';
 import { usePostState } from '../../context/Posts';
 import { useUserState } from '../../context/Users';
+import Loader from '../../components/Loader';
 
 function Home() {
   const { showModal, setShowModal } = useModalState()
@@ -45,7 +46,7 @@ function Home() {
   return (
     <div>
       {showModal && <EditorModal post={currentPost} closeModal={closeModal}/> }
-
+      <Loader/>
       <div className='post-wrapper'>
         { posts &&
           posts.map((post, index)=> {
