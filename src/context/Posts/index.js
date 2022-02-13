@@ -1,49 +1,24 @@
-import React from 'react'
+import React from 'react';
 
-const CountStateContext = React.createContext()
-const CountDispatchContext = React.createContext()
+const PostContext = React.createContext()
 
 
-function countReducer(state, action, payload) {
-  switch (action.type) {
-    case 'setData': {
-      return {count: state.count + 1}
-    }
-    case 'decrement': {
-      return {count: state.count - 1}
-    }
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`)
-    }
-  }
-}
-
-function CountProvider({children}) {
-  const [state, dispatch] = React.useReducer(countReducer, {count: 0})
+function PostContextProvider({children}) {
+  const [posts, setPosts] = React.useState()
 
   return (
-    <CountStateContext.Provider value={state}>
-      <CountDispatchContext.Provider value={dispatch}>
-        {children}
-      </CountDispatchContext.Provider>
-    </CountStateContext.Provider>
+    <PostContext.Provider value={{posts, setPosts}}>
+      { children }
+    </PostContext.Provider>
   )
 }
 
-function useCountState() {
-  const context = React.useContext(CountStateContext)
-  if (context === undefined) {
-    throw new Error('useCountState must be used within a CountProvider')
+function usePostState() {
+  const context = React.useContext(PostContext)
+  if (context === undefined) { 
+    throw new Error('must be use width PostContextProvider')
   }
   return context
 }
 
-function useCountDispatch() {
-  const context = React.useContext(CountDispatchContext)
-  if (context === undefined) {
-    throw new Error('useCountDispatch must be used within a CountProvider')
-  }
-  return context
-}
-
-export { CountProvider, useCountState, useCountDispatch }
+export { PostContextProvider, usePostState };

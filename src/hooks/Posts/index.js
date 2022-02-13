@@ -1,25 +1,48 @@
-import {useState} from 'react';
+import { useState } from 'react';
+import { useModalState } from '../../context/Modal';
+import { getPosts } from '../../api/getPosts';
+import { usePostState } from '../../context/Posts';
 
 function usePost() {
-  const [postsData, setPostsData] = useState([])
+  const { setShowModal } = useModalState()
+  const { posts, setPosts } = usePostState()
+  const [ currentPost, setCurrentPost ] = useState({})
 
-  const createPost = (post) => setPostsData(state => state.push(post))
 
-  const deletePost = (id) => setPostsData(state => {
-    const idx = state.indexOf(post => post.id === id)
-    state.splice(idx, 1)
-    console.log(state, 'deletePost - state');
-    setPostsData(state)
-  })
+  const fetchPosts = async () => {
+    const posts = await getPosts()
+    setPosts(posts)
+  }
 
-  const updatePost = () => setPostsData(state => state - 1)
+  const createPost = (newPost) => {
+    posts.push(newPost)
+    setPosts(posts)
+    setShowModal(false)
+  }
+
+  const deletePost = (id) => {
+    const idx = posts.findIndex(post => post.id === id)
+    posts.splice(idx, 1)
+    setPosts(posts)
+    setShowModal(false)
+  }
+
+  const updatePost = (updatedPost) => {
+    const idx = posts.findIndex(post => post.id === updatedPost.id)
+    posts[idx] = updatedPost
+    setPosts(posts)
+    setShowModal(false)
+  }
 
   return {
-    postsData,
-    setPostsData,
+    currentPost,
+    setCurrentPost,
+
     createPost,
     deletePost,
     updatePost,
+
+    fetchPosts,
   }
 };
 
