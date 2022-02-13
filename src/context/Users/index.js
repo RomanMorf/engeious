@@ -5,7 +5,7 @@ const UserContext = React.createContext()
 
 function UserContextProvider({children}) {
   const [users, setUsers] = React.useState()
-
+  console.log(users, 'users from UserContextProvider');
   return (
     <UserContext.Provider value={{users, setUsers}}>
       { children }

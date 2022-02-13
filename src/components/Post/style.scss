@@ -1,12 +1,19 @@
 .post {
   &-body {
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    border-radius: 5px;
     padding: 10px;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 0 0 0 rgba(77, 77, 77, 0.5);
+    &:hover {
+      box-shadow: 2px 3px 3px rgba(77, 77, 77, 0.5);
+    }
   }
 
   &-id {
-
+    font-weight: bold;
+    font-style: italic;
   }
   
   &-autor::first-letter, 
@@ -16,14 +23,31 @@
   }
 
   &-title {
-    // text-transform: capitalize;
+    font-size: 25px;
   }
 
   &-text {
-
   }
+  
   &-autor {
+    font-weight: bold;
+    color: rgb(59, 154, 167);
+    font-style: italic;
+  }
 
+  &-edit {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    background-color: transparent;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(84, 84, 84, 0.5);
+
+    &:hover {
+      box-shadow: 2px 2px 5px rgba(84, 84, 84, 0.5);
+    }
   }
 }
 
