@@ -16,7 +16,7 @@ function NavBar() {
         </li>
         <li className='nav_item'>
           <NavLink 
-            to="/about" 
+            to="/users" 
             className="nav_link"
             activeclassname="active"
           >Users</NavLink>
