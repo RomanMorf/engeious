@@ -1,5 +1,5 @@
 import './index.scss'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Post } from '../../components/Post';
 import EditorModal from '../../components/EditorModal';
 import usePost from '../../hooks/Posts';
@@ -13,6 +13,13 @@ function Home() {
   const { showModal, setShowModal } = useModalState()
   const { posts, setPosts } = usePostState()
   const { users, setUsers } = useUserState()
+
+  const [newPost, setNewPost] = useState({
+    id: Date.now(),
+    title: '',
+    body: '',
+    userId: '',
+  })
 
   const { 
     currentPost,
@@ -41,9 +48,17 @@ function Home() {
 
   }, [])
 
+  function createNewPost() {
+    setCurrentPost(newPost)
+    setShowModal(true)
+  }
+
   return (
     <div>
       {showModal && <EditorModal post={currentPost} closeModal={closeModal}/> }
+
+      <button onClick={ () => createNewPost() }>New Post</button>
+
       <div className='post-wrapper'>
         { (posts && users) &&
           posts.map((post, index)=> {
@@ -54,7 +69,6 @@ function Home() {
                 user={ getUserById(users, post.userId) }
                 key={ 'post' + post.id } 
                 onEditPost={(postId) => chooseCurrentPost(postId)}
-
               />
             )
           })
