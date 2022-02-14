@@ -8,6 +8,7 @@ import { useModalState } from '../../context/Modal';
 import { usePostState } from '../../context/Posts';
 import { useUserState } from '../../context/Users';
 import getUserById from '../../heplers/getAutorById';
+import Loader from '../../components/Loader';
 
 function Home() {
   const { showModal, setShowModal } = useModalState()
@@ -59,6 +60,7 @@ function Home() {
 
       <button onClick={ () => createNewPost() }>New Post</button>
 
+      <Loader/>
       <div className='post-wrapper'>
         { (posts && users) &&
           posts.map((post, index)=> {

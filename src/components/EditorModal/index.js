@@ -6,7 +6,8 @@ import ModalConfirm from '../ModalConfirm'
 
 function EditorModal(props) {
   const {showModal, setShowModal} = useModalState()
-  const [confirm, setConfirm] = useState(true)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [confirm, setConfirm] = useState(false)
 
   const { 
     createPost,
@@ -26,38 +27,60 @@ function EditorModal(props) {
     }
   }
 
+  function updatePostFunc(post) {
+    
+  }
+  function deletePostFunc(id) {
+    setShowConfirm(true)
+  }
+  function onCloseFunc() {
+    setConfirm(false)
+  }
+
+  useEffect(() => {
+    return ()=> {
+      setShowConfirm(false)
+      setConfirm(false)
+    }
+  }, [])
+
 
   return (
-    <div className='modal_wrapper' onClick={(e)=> closeModalFunc(e)}>
-      <div className='modal_body'>
+    <>
+      {showConfirm && <ModalConfirm 
+        onConfirm={() => setConfirm(false)} 
+        onCancel={() => setConfirm(false)} 
+        onClose={() => onCloseFunc()} 
+      />}
 
-        {confirm && <ModalConfirm onCofirm onCancel onClose />}
-
-        <div className='modal_header'>
-          <h3>EditorModal</h3>
-        </div> 
-          <div className='modal_main'>
-            <h4>Editor</h4>
-            <p>{props.post.userId} - UserId</p>
-            <p>{props.post.id} - Id</p>
-            <h4>{props.post.title}</h4>
-            <p>{props.post.body}</p>
+      <div className='modal_wrapper' onClick={(e)=> closeModalFunc(e)}>
+        <div className='modal_body'>
+          <div className='modal_header'>
+            <h3>EditorModal</h3>
+          </div> 
+            <div className='modal_main'>
+              <h4>Editor</h4>
+              <p>{props.post.userId} - UserId</p>
+              <p>{props.post.id} - Id</p>
+              <h4>{props.post.title}</h4>
+              <p>{props.post.body}</p>
+            </div>
+            <div className='modal_footer'>
+          <button className='modal_btn' 
+            onClick={() => createPost({
+              id: Date.now(), 
+              title: 'some title', 
+              body: 'some body text', 
+              userId: 5,
+              }
+            )}>Create post</button>
+            <button className='modal_btn' onClick={()=> updatePostFunc(post)}>Update post</button>
+            <button className='modal_btn' onClick={() => deletePostFunc(post.id)}>Delete post</button>
           </div>
-          <div className='modal_footer'>
-        <button className='modal_btn' 
-          onClick={() => createPost({
-            id: Date.now(), 
-            title: 'some title', 
-            body: 'some body text', 
-            userId: 5,
-            }
-          )}>Create post</button>
-          <button className='modal_btn' onClick={()=> updatePost(post)}>Update post</button>
-          <button className='modal_btn' onClick={() => deletePost(post.id)}>Delete post</button>
+          <button className='modal_close' onClick={(e)=> closeModalFunc(e)}>X</button>
         </div>
-        <button className='modal_close' onClick={(e)=> closeModalFunc(e)}>X</button>
       </div>
-    </div>
+    </>
   )
 }
 
