@@ -28,8 +28,8 @@
   }
   &_footer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 
   &_close {
@@ -58,6 +58,19 @@
 
     &:hover {
       box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &_input {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    margin-bottom: 3px;
+    &:focus {
+      border-bottom: 2px solid #000;
     }
   }
 }

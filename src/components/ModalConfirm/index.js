@@ -1,28 +1,13 @@
 import React from 'react';
 import './style.scss'
 
-function ModalConfirm(props) {
+function ModalConfirm({children, text, onClose, onConfirm, onCancel}) {
 
   function closeModalFunc(event) {
-    if (event.target.className === 'modal_wrapper' || event.target.className === 'modal_close' ) {
-      props.onClose()
-      
-    } else {
-      return
+    if (event.target.className === 'confirm_wrapper' || event.target.className === 'confirm_close' ) {
+      onClose()
+
     }
-  }
-
-  function modalConfirm() {
-    console.log('modalConfirm');
-    props.onConfirm()
-  }
-
-  function modalCancel() {
-    console.log('modalCancel');
-    props.onCancel()
-  }
-  function modalClose() {
-    props.onClose()
   }
 
   return (
@@ -30,12 +15,10 @@ function ModalConfirm(props) {
       <div className='confirm_body'>
         <div className='confirm_header'>
           <h3>Are you sure ?</h3>
-          <h4>{ props.text }</h4>
+          <p>{ text }</p>
         </div>
-        <div className='confirmr_footer'>
-          <button className='confirm_btn' onClick={() => modalConfirm()}>Confirm</button>
-          <button className='confirm_btn' onClick={() => modalCancel()}>Cancel</button>
-          <button className='confirm_btn' onClick={() => modalClose()}>Close</button>
+        <div className='confirm_footer'>
+          {children}
         </div>
       </div>
     </div>

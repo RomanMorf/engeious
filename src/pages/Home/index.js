@@ -15,23 +15,20 @@ function Home() {
   const { posts, setPosts } = usePostState()
   const { users, setUsers } = useUserState()
 
-  const [newPost, setNewPost] = useState({
+  const [ isLoading, setIsLoading ] = useState(true)
+  const [ newPost, setNewPost ] = useState({
     id: Date.now(),
     title: '',
     body: '',
     userId: '',
   })
 
-  const { 
+  const {
     currentPost,
     setCurrentPost,
     fetchPosts,
   } = usePost()
   const { fetchUsers } = useUser()
-
-  function closeModal() {
-    setShowModal(false)
-  }
 
   async function chooseCurrentPost(post) {
     await setCurrentPost(post)
@@ -42,7 +39,9 @@ function Home() {
     try {
       if (!posts) await fetchPosts()
       if (!users) await fetchUsers()
-
+      setTimeout(()=> {
+        setIsLoading(false)
+      }, 1500)
     } catch (error) {
       throw error
     }
@@ -56,26 +55,29 @@ function Home() {
 
   return (
     <div>
-      {showModal && <EditorModal post={currentPost} closeModal={closeModal}/> }
+      {showModal && <EditorModal post={currentPost} closeModal={() => setShowModal(false)}/> }
 
       <button onClick={ () => createNewPost() }>New Post</button>
 
-      <Loader/>
-      <div className='post-wrapper'>
-        { (posts && users) &&
-          posts.map((post, index)=> {
-            return (
-              index < 20 && 
-              <Post 
-                post={ post }  
-                user={ getUserById(users, post.userId) }
-                key={ 'post' + post.id } 
-                onEditPost={(postId) => chooseCurrentPost(postId)}
-              />
-            )
-          })
-        }
-      </div>
+      {isLoading && <Loader/>}
+
+      {!isLoading && 
+        <div className='post-wrapper'>
+          { (posts && users) &&
+            posts.map((post, index)=> {
+              return (
+                index < 20 && 
+                <Post 
+                  post={ post }  
+                  user={ getUserById(users, post.userId) }
+                  key={ 'post' + post.id } 
+                  onEditPost={(postId) => chooseCurrentPost(postId)}
+                />
+              )
+            })
+          }
+        </div>
+      }
     </div>
   )
 }
