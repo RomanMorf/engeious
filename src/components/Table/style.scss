@@ -23,6 +23,9 @@ table {
     tr:nth-child(odd) {
       background-color: rgb(220, 220, 220);
     }
+    tr:hover {
+      background-color: rgb(151, 151, 151);
+    }
   }
 
 }

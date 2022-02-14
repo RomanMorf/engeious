@@ -39,9 +39,8 @@ function Home() {
     try {
       if (!posts) await fetchPosts()
       if (!users) await fetchUsers()
-      setTimeout(()=> {
-        setIsLoading(false)
-      }, 1500)
+      setIsLoading(false)
+      
     } catch (error) {
       throw error
     }
@@ -55,7 +54,7 @@ function Home() {
 
   return (
     <div>
-      {showModal && <EditorModal post={currentPost} closeModal={() => setShowModal(false)}/> }
+      {showModal && <EditorModal post={currentPost} type={'post'} closeModal={() => setShowModal(false)}/> }
 
       <button onClick={ () => createNewPost() }>New Post</button>
 
