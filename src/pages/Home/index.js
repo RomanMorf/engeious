@@ -16,12 +16,12 @@ function Home() {
   const { users, setUsers } = useUserState()
 
   const [ isLoading, setIsLoading ] = useState(true)
-  const [ newPost, setNewPost ] = useState({
+  const newPost = {
     id: Date.now(),
     title: '',
     body: '',
     userId: '',
-  })
+  }
 
   const {
     currentPost,
@@ -56,7 +56,7 @@ function Home() {
     <div>
       {showModal && <EditorModal post={currentPost} type={'post'} closeModal={() => setShowModal(false)}/> }
 
-      <button onClick={ () => createNewPost() }>New Post</button>
+      <button className='btn' onClick={ () => createNewPost() }>New Post</button>
 
       {isLoading && <Loader/>}
 
@@ -65,7 +65,7 @@ function Home() {
           { (posts && users) &&
             posts.map((post, index)=> {
               return (
-                index < 20 && 
+                index < 200 && 
                 <Post 
                   post={ post }  
                   user={ getUserById(users, post.userId) }

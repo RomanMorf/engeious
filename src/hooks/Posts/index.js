@@ -14,12 +14,6 @@ function usePost() {
     setPosts(posts)
   }
 
-  const createPost = (newPost) => {
-    posts.push(newPost)
-    setPosts(posts)
-    setShowModal(false)
-  }
-
   const deletePost = (id) => {
     const idx = posts.findIndex(post => post.id === id)
     posts.splice(idx, 1)
@@ -28,8 +22,14 @@ function usePost() {
   }
 
   const updatePost = (updatedPost) => {
+
     const idx = posts.findIndex(post => post.id === updatedPost.id)
-    posts[idx] = updatedPost
+    console.log(idx);
+    if (idx < 0) {
+      posts.push(updatedPost)
+    } else {
+      posts[idx] = updatedPost
+    }
     setPosts(posts)
     setShowModal(false)
   }
@@ -38,7 +38,6 @@ function usePost() {
     currentPost,
     setCurrentPost,
 
-    createPost,
     deletePost,
     updatePost,
 
