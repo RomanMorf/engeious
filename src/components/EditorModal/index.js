@@ -6,7 +6,6 @@ import { useModalState } from '../../context/Modal';
 import ModalConfirm from '../ModalConfirm' 
 
 function EditorModal(props) {
-  console.log(props);
   const { setShowModal } = useModalState()
   const { deletePost, updatePost } = usePost()
   const { deleteUser, updateUser } = useUser()
@@ -20,12 +19,14 @@ function EditorModal(props) {
   useEffect(() => {
     setCurrentPost(props.post)
     setCurrentUser(props.user)
-  }, [props.post, props.user]);
+  }, []);
 
   useEffect(() => {
     return ()=> {
       setShowConfirmDelete(false)
       setShowConfirmUpdate(false)
+      setCurrentPost({})
+      setCurrentPost({})
     }
   }, [])
 
@@ -184,7 +185,7 @@ function EditorModal(props) {
                 {currentUser && <input className='modal_input' type="text" value={currentUser.email} data-email onChange={(e) => inputHandle(e)}/>}
               </div>
             </>
-        }
+          }
           <div className='modal_footer'>
             <button className='modal_btn' onClick={()=> updateFunc()}>Save</button>
             <button className='modal_btn' onClick={() => deleteFunc()}>Delete</button>

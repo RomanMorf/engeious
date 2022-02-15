@@ -8,15 +8,12 @@ function Table ({users}) {
   const { showModal, setShowModal } = useModalState(false)
   const { 
     currentUser,
-    setCurrentUser,
-    createUser,
-    deleteUser,
-    updateUser } = useUser()
+    setCurrentUser } = useUser()
 
-function chooseCurrentUser(user) {
-  setCurrentUser(user)
-  setShowModal(true)
-}
+  function chooseCurrentUser(user) {
+    setCurrentUser(user)
+    setShowModal(true)
+  }
 
   return (
     <>
