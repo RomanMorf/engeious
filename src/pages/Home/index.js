@@ -7,7 +7,6 @@ import useUser from '../../hooks/Users';
 import { useModalState } from '../../context/Modal';
 import { usePostState } from '../../context/Posts';
 import { useUserState } from '../../context/Users';
-import getUserById from '../../heplers/getAutorById';
 import Loader from '../../components/Loader';
 import PostMaper from '../../components/PostMaper';
 import Paginated from '../../components/Paginated';
@@ -25,13 +24,8 @@ function Home() {
     body: '',
     userId: '',
   })
-  const [currentItems, setCurrentItems] = useState()
 
-  const {
-    currentPost,
-    setCurrentPost,
-    fetchPosts,
-  } = usePost()
+  const { currentPost, setCurrentPost, fetchPosts } = usePost()
   const { fetchUsers } = useUser()
 
   useEffect( async ()=> {
@@ -52,7 +46,12 @@ function Home() {
 
   return (
     <div className='home'>
-      {showModal && <EditorModal post={currentPost} closeModal={() => setShowModal(false)}/> }
+      {showModal && 
+        <EditorModal 
+          post={currentPost} 
+          closeModal={() => setShowModal(false)}
+        />
+      }
 
       <button onClick={ () => createNewPost() }>New Post</button>
 
@@ -61,8 +60,8 @@ function Home() {
       {!isLoading && 
         <>
           <CurrentItemsContextProvider>
-            <PostMaper posts={currentItems} users={users}/>
-            <Paginated items={posts} itemsPerPage={6} onPageChange={(items) => setCurrentItems(items)}/>
+            <PostMaper users={users}/>
+            <Paginated items={posts} itemsPerPage={6} />
           </CurrentItemsContextProvider>
         </>
       }

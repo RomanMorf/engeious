@@ -2,29 +2,25 @@ import React, { useEffect, useState } from 'react';
 import './style.scss'
 import ReactPaginate from 'react-paginate';
 
-import { usePostState } from '../../context/Posts';
 import { useCurrentItemsState } from '../../context/CurrentItems';
 import { useModalState } from '../../context/Modal';
 
-function Paginated({ itemsPerPage, items, onPageChange }) {
+function Paginated({ itemsPerPage, items }) {
   const [ pageCount, setPageCount ] = useState(0);
   const [ itemOffset, setItemOffset ] = useState(0);
-  const { posts } = usePostState()
   const { setCurrentItems } = useCurrentItemsState(null)
   const { showModal } = useModalState()
 
-
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(posts.slice(itemOffset, endOffset));
+    setCurrentItems(items.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(items.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, items.length, showModal]);
 
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % posts.length;
+    const newOffset = (event.selected * itemsPerPage) % items.length;
     setItemOffset(newOffset);
   };
-
 
   return (
     <>

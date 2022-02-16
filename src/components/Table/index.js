@@ -1,15 +1,37 @@
 import React from 'react';
 import './style.scss'
+import Paginated from '../Paginated';
 
-function Table ({users}) {
-  console.log(users, 'users from Table');
+import { useUserState } from '../../context/Users';
+import { useCurrentItemsState } from '../../context/CurrentItems';
+import { useModalState } from '../../context/Modal';
+import EditorModal from '../EditorModal';
+import useUser from '../../hooks/Users';
+
+function Table () {
+  const { showModal, setShowModal } = useModalState()
+  const { users } = useUserState()
+  const { currentItems } = useCurrentItemsState(null)
+  const { currentUser, setCurrentUser } = useUser()
+
+  function chooseCurrentUser(user) {
+    setCurrentUser(user)
+    setShowModal(true)
+  }
 
   return (
     <>
+      {showModal && currentUser && 
+        <EditorModal 
+          user={currentUser} 
+          closeModal={() => setShowModal(false)}
+        />
+      }
+
       <table>
         <thead>
           <tr>
-            <td>#</td>
+            <td>id</td>
             <td>username</td>
             <td>name</td>
             <td>post created</td>
@@ -19,10 +41,10 @@ function Table ({users}) {
           </tr>
         </thead>
         <tbody>
-          {users && users.map((user, index) => {
+          {currentItems && currentItems.map( user => {
             return (
-              <tr key={ user.id }>
-                <td>{ index + 1 }</td>
+              <tr key={ user.id } onClick={() => chooseCurrentUser(user)}>
+                <td>{ user.id }</td>
                 <td>{ user.username }</td>
                 <td>{ user.name }</td>
                 <td> -= number =-</td>
@@ -34,6 +56,7 @@ function Table ({users}) {
           })}
         </tbody>
       </table>
+      <Paginated items={users} itemsPerPage={5}/>
     </>
   )
 }

@@ -23,6 +23,10 @@ table {
     tr:nth-child(odd) {
       background-color: rgb(220, 220, 220);
     }
+    tr:hover {
+      background-color: rgb(162, 162, 162);
+      cursor: pointer;
+    }
   }
 
 }
