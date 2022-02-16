@@ -1,14 +1,18 @@
 import React from 'react';
 import './style.scss'
-import useUser from '../../hooks/Users';
-import EditorModal from '../EditorModal';
-import { useModalState } from '../../context/Modal';
+import Paginated from '../Paginated';
 
-function Table ({users}) {
-  const { showModal, setShowModal } = useModalState(false)
-  const { 
-    currentUser,
-    setCurrentUser } = useUser()
+import { useUserState } from '../../context/Users';
+import { useCurrentItemsState } from '../../context/CurrentItems';
+import { useModalState } from '../../context/Modal';
+import EditorModal from '../EditorModal';
+import useUser from '../../hooks/Users';
+
+function Table () {
+  const { showModal, setShowModal } = useModalState()
+  const { users } = useUserState()
+  const { currentItems } = useCurrentItemsState(null)
+  const { currentUser, setCurrentUser } = useUser()
 
   function chooseCurrentUser(user) {
     setCurrentUser(user)
@@ -17,35 +21,40 @@ function Table ({users}) {
 
   return (
     <>
-      {showModal && <EditorModal user={currentUser} type={'user'} closeModal={() => setShowModal(false)}/> }
+      {showModal && currentUser && 
+        <EditorModal 
+          user={currentUser} 
+          closeModal={() => setShowModal(false)}
+        />
+      }
+
       <table>
         <thead>
           <tr>
-            <td>#</td>
+            <td>id</td>
             <td>username</td>
             <td>name</td>
             <td>post created</td>
             <td>email</td>
             <td>website</td>
-            <td>company</td>
           </tr>
         </thead>
         <tbody>
-          {users && users.map((user, index) => {
+          {currentItems && currentItems.map( user => {
             return (
               <tr key={ user.id } onClick={() => chooseCurrentUser(user)}>
-                <td>{ index + 1 }</td>
-                <td>{ user.username }</td>
-                <td>{ user.name }</td>
+                <td>{ user.id || '' }</td>
+                <td>{ user.username || '' }</td>
+                <td>{ user.name || '' }</td>
                 <td> -= number =-</td>
-                <td>{ user.email }</td>
-                <td>{ user.website }</td>
-                <td>{ user.company.name }</td>
+                <td>{ user.email || '' }</td>
+                <td>{ user.website || '' }</td>
               </tr>
             )
           })}
         </tbody>
       </table>
+      <Paginated items={users} itemsPerPage={5}/>
     </>
   )
 }

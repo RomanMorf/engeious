@@ -4,6 +4,8 @@
 
 body {
   font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .material-icons.md-18 { font-size: 18px; }
@@ -12,9 +14,9 @@ body {
 .material-icons.md-48 { font-size: 48px; }
 
 .btn {
-  padding: 5px;
   border: none;
   border-radius: 3px;
+  padding: 5px;
   background-color: rgba(168, 124, 83, 0.877);
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   transition: all .3s ease;

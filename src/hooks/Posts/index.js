@@ -24,14 +24,16 @@ function usePost() {
   const updatePost = (updatedPost) => {
 
     const idx = posts.findIndex(post => post.id === updatedPost.id)
-    console.log(idx);
     if (idx < 0) {
-      posts.push(updatedPost)
+      const newPost = updatedPost
+      posts.push(newPost)
+      setPosts(posts)
+      setShowModal(false)
     } else {
       posts[idx] = updatedPost
+      setPosts(posts)
+      setShowModal(false)
     }
-    setPosts(posts)
-    setShowModal(false)
   }
 
   return {

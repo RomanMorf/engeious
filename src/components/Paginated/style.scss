@@ -1,0 +1,21 @@
+.paginate {
+  margin: 10px auto;
+  max-width: 50%;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+
+  &_link {
+    cursor: pointer;
+  }
+  &_btn {
+    cursor: pointer;
+    font-weight: bold;
+  }
+  &_disable{
+    color: grey;
+  }
+  &_active {
+    font-weight: bold;
+  }
+}

@@ -6,122 +6,71 @@ import { useModalState } from '../../context/Modal';
 import ModalConfirm from '../ModalConfirm' 
 
 function EditorModal(props) {
-  const { setShowModal } = useModalState()
-  const { deletePost, updatePost } = usePost()
-  const { deleteUser, updateUser } = useUser()
+  const { setShowModal} = useModalState()
+  const { deletePost, updatePost, createPost } = usePost()
+  const { deleteUser, updateUser, createUser } = useUser()
+  const [ current, setCurrent ] = useState()
 
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
-  const [showConfirmUpdate, setShowConfirmUpdate] = useState(false)
-  const [confirmText, setConfirmText] = useState('')
-  const [currentPost, setCurrentPost] = useState()
-  const [currentUser, setCurrentUser] = useState()
+  const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
+  const [ showConfirmUpdate, setShowConfirmUpdate ] = useState(false)
+  const [ showConfirmCreate, setShowConfirmCreate ] = useState(false)
+  const [ confirmText, setConfirmText ] = useState('')
 
   useEffect(() => {
-    setCurrentPost(props.post)
-    setCurrentUser(props.user)
+    if ( props.post) setCurrent(props.post)
+    if ( props.user) setCurrent(props.user)
   }, []);
-
-  useEffect(() => {
-    return ()=> {
-      setShowConfirmDelete(false)
-      setShowConfirmUpdate(false)
-      setCurrentPost({})
-      setCurrentPost({})
-    }
-  }, [])
 
   function closeModalFunc(event) {
     if (event.target.className === 'modal_wrapper' || event.target.className === 'modal_close' || event.target.className === 'modal_btn close' ) {
       setShowModal(false)
+      props.closeModal()
     }
   }
 
-  function updateFunc() {
-    if (props.post) {
-      setConfirmText(`Are you sure, that you want save this post`)
-      setShowConfirmUpdate(true)
-      return
-    } else if (props.user) {
-      setConfirmText(`Are you sure, that you want save info of this user`)
-      setShowConfirmUpdate(true)
-    } else {
-      console.log('Unhandled event...');
-    }
+  function updateTextFunc() {
+    props.post 
+    ? setConfirmText(`Are you sure, that you want update this post`)
+    : setConfirmText(`Are you sure, that you want update info for this user`)
+
+    setShowConfirmUpdate(true)
+  }
+
+  function createTextFunc() {
+    props.post 
+    ? setConfirmText(`Are you sure, that you want Create new post`)
+    : setConfirmText(`Are you sure, that you want Create new user`)
+
+    setShowConfirmCreate(true)
+  }
+
+  function createFunc() {
+    props.post 
+      ? createPost(current)
+      : createUser(current)
+    console.log(current, 'create new user');
+    setShowConfirmCreate(false)
+    props.closeModal()
   }
 
   function deleteFunc() {
-    if (props.post) {
-      setConfirmText(`Are you sure, that you want delete post "${currentPost.title}"`)
-      setShowConfirmDelete(true)
-    } else if (props.user) {
-      setConfirmText(`Are you sure, that you want delete user "${currentUser.name}"`)
-      setShowConfirmDelete(true)
-    } else {
-      console.log('Unhandled event...');
-    }
+    props.post 
+    ? setConfirmText(`Are you sure, that you want delete post "${current.title}" ?`)
+    : setConfirmText(`Are you sure, that you want delete this user "${current.name}" ?`)
+
+    setShowConfirmDelete(true)
   }
 
   function inputHandle (e) {
-    let newData = {}
-
-    if (e.target.attributes['data-userId']) {
-      newData = {
-        ...currentPost,
-        userId: parseInt(e.target.value) || ''
-      }
-      setCurrentPost(newData)
+    const key = e.target.attributes['data-post'].nodeValue
+    const newData = {
+    ...current,
+    [key]: e.target.value
     }
-    if (e.target.attributes['data-title']) {
-      newData = {
-        ...currentPost,
-        title: e.target.value
-      }
-      setCurrentPost(newData)
-    }
-    if (e.target.attributes['data-body']) {
-      newData = {
-        ...currentPost,
-        body: e.target.value
-      }
-      setCurrentPost(newData)
-    }
-    if (e.target.attributes['data-name']) {
-      newData = {
-        ...currentUser,
-        name: e.target.value
-      }
-      setCurrentUser(newData)
-    }
-    if (e.target.attributes['data-phone']) {
-      newData = {
-        ...currentUser,
-        phone: e.target.value
-      }
-      setCurrentUser(newData)
-    }
-    if (e.target.attributes['data-username']) {
-      newData = {
-        ...currentUser,
-        username: e.target.value
-      }
-      setCurrentUser(newData)
-    }    
-    if (e.target.attributes['data-website']) {
-      newData = {
-        ...currentUser,
-        website: e.target.value
-      }
-      setCurrentUser(newData)
-    }    
-    if (e.target.attributes['data-email']) {
-      newData = {
-        ...currentUser,
-        email: e.target.value
-      }
-      setCurrentUser(newData)
-    }
+    setCurrent(newData)    
   }
 
+  console.log(props.user);
   return (
     <>
       {showConfirmDelete && 
@@ -129,11 +78,10 @@ function EditorModal(props) {
           onClose={ () => setShowConfirmDelete(false)} 
           text={confirmText}
         >
-          <button className='confirm_btn' onClick={
-            currentPost 
-            ? () => deletePost(currentPost.id) 
-            : () => deleteUser(currentUser.id)
-          }>Delete</button>
+          {props.post
+            ? <button className='confirm_btn' onClick={() => deletePost(current.id)}>Delete</button>
+            : <button className='confirm_btn' onClick={() => deleteUser(current.id)}>Delete</button>
+          }
           <button className='confirm_btn' onClick={() => setShowConfirmDelete(false)}>Cancel</button>
         </ModalConfirm>
       }
@@ -142,15 +90,23 @@ function EditorModal(props) {
           onClose={ () => setShowConfirmUpdate(false)} 
           text={confirmText}
         >
-          <button className='confirm_btn' onClick={
-            currentPost 
-            ? () => updatePost(currentPost)
-            : () => updateUser(currentUser)
-          }>Save</button>
-
+          {props.post
+            ? <button className='confirm_btn' onClick={() => updatePost(current)}>Save</button>
+            : <button className='confirm_btn' onClick={() => updateUser(current)}>Save</button>
+          }
           <button className='confirm_btn' onClick={() => setShowConfirmUpdate(false)}>Cancel</button>
         </ModalConfirm>
       }
+      {showConfirmCreate && 
+        <ModalConfirm         
+          onClose={ () => setShowConfirmCreate(false)} 
+          text={confirmText}
+        >
+          <button className='confirm_btn' onClick={() => createFunc()}>Create</button>
+          <button className='confirm_btn' onClick={() => setShowConfirmUpdate(false)}>Cancel</button>
+        </ModalConfirm>
+      }
+
 
       <div className='modal_wrapper' onClick={(e)=> closeModalFunc(e)}>
         <div className='modal_body'>
@@ -158,37 +114,42 @@ function EditorModal(props) {
             <h3>EditorModal</h3>
           </div> 
 
-          {props.post && 
-            <>
-              <div className='modal_main'>
+          <div className='modal_main'>
+            {props.post && 
+              <>
                 <p>Autor Id:</p>
-                {currentPost && <input className='modal_input' type="text" value={currentPost.userId} data-userId onChange={(e) => inputHandle(e)}/>}
+                {current && <input className='modal_input' type="number" value={current.userId} data-post='userId' onChange={(e) => inputHandle(e)}/>}
                 <h4>Title:</h4>
-                {currentPost && <input className='modal_input' type="text" value={currentPost.title} data-title onChange={(e) => inputHandle(e)}/>}
-                <p className='modal_text'>Text: </p>
-                {currentPost && <textarea className='modal_textarea' rows="5" value={currentPost.body} data-body onChange={(e) => inputHandle(e)}></textarea>}
-              </div>
-            </>
-          }
-          {props.user && 
-            <>
-              <div className='modal_main'>
-                <h4>User name:</h4>
-                {currentUser && <input className='modal_input' type="text" value={currentUser.name} data-name onChange={(e) => inputHandle(e)}/>}
-                <p>Tel:</p>
-                {currentUser && <input className='modal_input' type="text" value={currentUser.phone} data-phone onChange={(e) => inputHandle(e)}/>}
-                <p>User username:</p>
-                {currentUser && <input className='modal_input' type="text" value={currentUser.username} data-username onChange={(e) => inputHandle(e)}/>}
-                <p>Website:</p>
-                {currentUser && <input className='modal_input' type="text" value={currentUser.website} data-website onChange={(e) => inputHandle(e)}/>}
+                {current && <input className='modal_input' type="text" value={current.title} data-post='title' onChange={(e) => inputHandle(e)}/>}
+                <p className='modal_text'>Post text:</p>
+                {current && <input className='modal_input' type="text" value={current.body} data-post='body' onChange={(e) => inputHandle(e)}/>}
+              </>
+            }
+            {props.user && 
+              <>
+                <p>Name:</p>
+                {current && <input className='modal_input' type="text" value={current.name} data-post='name' onChange={(e) => inputHandle(e)}/>}
+                <p>Username:</p>
+                {current && <input className='modal_input' type="text" value={current.username} data-post='username' onChange={(e) => inputHandle(e)}/>}
                 <p>Email:</p>
-                {currentUser && <input className='modal_input' type="text" value={currentUser.email} data-email onChange={(e) => inputHandle(e)}/>}
-              </div>
-            </>
-          }
+                {current && <input className='modal_input' type="text" value={current.email} data-post='email' onChange={(e) => inputHandle(e)}/>}
+                <p>Phone:</p>
+                {current && <input className='modal_input' type="text" value={current.phone} data-post='phone' onChange={(e) => inputHandle(e)}/>}
+                <p>Website:</p>
+                {current && <input className='modal_input' type="text" value={current.website} data-post='website' onChange={(e) => inputHandle(e)}/>}
+              </>
+            }
+          </div>
+
           <div className='modal_footer'>
-            <button className='modal_btn' onClick={()=> updateFunc()}>Save</button>
-            <button className='modal_btn' onClick={() => deleteFunc()}>Delete</button>
+            {props.new
+              ? <button className='modal_btn' onClick={()=> createTextFunc()}>Create new</button>
+              : <button className='modal_btn' onClick={()=> updateTextFunc()}>Save</button>
+            }
+            {props.new
+              ? <button className='modal_btn close' onClick={(e)=> closeModalFunc(e)}>Cancel</button>
+              : <button className='modal_btn' onClick={() => deleteFunc()}>Delete</button>
+            }
           </div>
           <button className='modal_close' onClick={(e)=> closeModalFunc(e)}>X</button>
         </div>
