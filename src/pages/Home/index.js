@@ -13,17 +13,17 @@ import Paginated from '../../components/Paginated';
 import { CurrentItemsContextProvider } from '../../context/CurrentItems';
 
 function Home() {
-  const { showModal, setShowModal } = useModalState()
+  const [ showModal, setShowModal ] = useState()
   const { posts, setPosts } = usePostState()
   const { users, setUsers } = useUserState()
 
   const [ isLoading, setIsLoading ] = useState(true)
-  const [ newPost, setNewPost ] = useState({
-    id: Date.now(),
-    title: '',
-    body: '',
-    userId: '',
-  })
+  // const [ newPost, setNewPost ] = useState({
+  //   id: Date.now(),
+  //   title: '',
+  //   body: '',
+  //   userId: '',
+  // })
 
   const { currentPost, setCurrentPost, fetchPosts } = usePost()
   const { fetchUsers } = useUser()
@@ -40,20 +40,31 @@ function Home() {
   }, [])
 
   function createNewPost() {
+    const newPost = {
+      id: Date.now(),
+      title: '',
+      body: '',
+      userId: '',
+    }
     setCurrentPost(newPost)
     setShowModal(true)
+  }
+
+  function closeModalFunc() {
+    setShowModal(false)
   }
 
   return (
     <div className='home'>
       {showModal && 
         <EditorModal 
-          post={currentPost} 
-          closeModal={() => setShowModal(false)}
+          post={currentPost}
+          new
+          closeModal={closeModalFunc}
         />
       }
 
-      <button onClick={ () => createNewPost() }>New Post</button>
+      <button className='btn' onClick={ () => createNewPost() }>New Post</button>
 
       {isLoading && <Loader/>}
 

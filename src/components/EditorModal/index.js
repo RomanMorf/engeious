@@ -7,12 +7,13 @@ import ModalConfirm from '../ModalConfirm'
 
 function EditorModal(props) {
   const { setShowModal} = useModalState()
-  const { deletePost, updatePost } = usePost()
-  const { deleteUser, updateUser } = useUser()
+  const { deletePost, updatePost, createPost } = usePost()
+  const { deleteUser, updateUser, createUser } = useUser()
   const [ current, setCurrent ] = useState()
 
   const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
   const [ showConfirmUpdate, setShowConfirmUpdate ] = useState(false)
+  const [ showConfirmCreate, setShowConfirmCreate ] = useState(false)
   const [ confirmText, setConfirmText ] = useState('')
 
   useEffect(() => {
@@ -23,15 +24,33 @@ function EditorModal(props) {
   function closeModalFunc(event) {
     if (event.target.className === 'modal_wrapper' || event.target.className === 'modal_close' || event.target.className === 'modal_btn close' ) {
       setShowModal(false)
+      props.closeModal()
     }
   }
 
-  function updateFunc() {
+  function updateTextFunc() {
     props.post 
     ? setConfirmText(`Are you sure, that you want update this post`)
     : setConfirmText(`Are you sure, that you want update info for this user`)
 
     setShowConfirmUpdate(true)
+  }
+
+  function createTextFunc() {
+    props.post 
+    ? setConfirmText(`Are you sure, that you want Create new post`)
+    : setConfirmText(`Are you sure, that you want Create new user`)
+
+    setShowConfirmCreate(true)
+  }
+
+  async function createFunc() {
+    props.post 
+      ? createPost(current)
+      : createUser(current)
+    
+    setShowConfirmCreate(false)
+    props.closeModal()
   }
 
   function deleteFunc() {
@@ -51,7 +70,6 @@ function EditorModal(props) {
     setCurrent(newData)    
   }
 
-  console.log(props);
   return (
     <>
       {showConfirmDelete && 
@@ -78,6 +96,16 @@ function EditorModal(props) {
           <button className='confirm_btn' onClick={() => setShowConfirmUpdate(false)}>Cancel</button>
         </ModalConfirm>
       }
+      {showConfirmCreate && 
+        <ModalConfirm         
+          onClose={ () => setShowConfirmCreate(false)} 
+          text={confirmText}
+        >
+          <button className='confirm_btn' onClick={() => createFunc()}>Create</button>
+          <button className='confirm_btn' onClick={() => setShowConfirmUpdate(false)}>Cancel</button>
+        </ModalConfirm>
+      }
+
 
       <div className='modal_wrapper' onClick={(e)=> closeModalFunc(e)}>
         <div className='modal_body'>
@@ -113,8 +141,14 @@ function EditorModal(props) {
           </div>
 
           <div className='modal_footer'>
-            <button className='modal_btn' onClick={()=> updateFunc()}>Save</button>
-            <button className='modal_btn' onClick={() => deleteFunc()}>Delete</button>
+            {props.new
+              ? <button className='modal_btn' onClick={()=> createTextFunc()}>Create new</button>
+              : <button className='modal_btn' onClick={()=> updateTextFunc()}>Save</button>
+            }
+            {props.new
+              ? <button className='modal_btn close' onClick={(e)=> closeModalFunc(e)}>Cancel</button>
+              : <button className='modal_btn' onClick={() => deleteFunc()}>Delete</button>
+            }
           </div>
           <button className='modal_close' onClick={(e)=> closeModalFunc(e)}>X</button>
         </div>
