@@ -9,6 +9,9 @@ import { usePostState } from '../../context/Posts';
 import { useUserState } from '../../context/Users';
 import getUserById from '../../heplers/getAutorById';
 import Loader from '../../components/Loader';
+import PostMaper from '../../components/PostMaper';
+import Paginated from '../../components/Paginated';
+import { CurrentItemsContextProvider } from '../../context/CurrentItems';
 
 function Home() {
   const { showModal, setShowModal } = useModalState()
@@ -22,6 +25,7 @@ function Home() {
     body: '',
     userId: '',
   })
+  const [currentItems, setCurrentItems] = useState()
 
   const {
     currentPost,
@@ -30,22 +34,15 @@ function Home() {
   } = usePost()
   const { fetchUsers } = useUser()
 
-  async function chooseCurrentPost(post) {
-    await setCurrentPost(post)
-    await setShowModal(true)
-  }
-
   useEffect( async ()=> {
     try {
       if (!posts) await fetchPosts()
       if (!users) await fetchUsers()
-      setTimeout(()=> {
-        setIsLoading(false)
-      }, 1500)
+      setIsLoading(false)
+
     } catch (error) {
       throw error
     }
-
   }, [])
 
   function createNewPost() {
@@ -54,7 +51,7 @@ function Home() {
   }
 
   return (
-    <div>
+    <div className='home'>
       {showModal && <EditorModal post={currentPost} closeModal={() => setShowModal(false)}/> }
 
       <button onClick={ () => createNewPost() }>New Post</button>
@@ -62,21 +59,12 @@ function Home() {
       {isLoading && <Loader/>}
 
       {!isLoading && 
-        <div className='post-wrapper'>
-          { (posts && users) &&
-            posts.map((post, index)=> {
-              return (
-                index < 20 && 
-                <Post 
-                  post={ post }  
-                  user={ getUserById(users, post.userId) }
-                  key={ 'post' + post.id } 
-                  onEditPost={(postId) => chooseCurrentPost(postId)}
-                />
-              )
-            })
-          }
-        </div>
+        <>
+          <CurrentItemsContextProvider>
+            <PostMaper posts={currentItems} users={users}/>
+            <Paginated items={posts} itemsPerPage={6} onPageChange={(items) => setCurrentItems(items)}/>
+          </CurrentItemsContextProvider>
+        </>
       }
     </div>
   )

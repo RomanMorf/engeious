@@ -5,7 +5,7 @@ const PostContext = React.createContext()
 
 function PostContextProvider({children}) {
   const [posts, setPosts] = React.useState()
-  console.log(posts, 'posts from PostContextProvider');
+
   return (
     <PostContext.Provider value={{posts, setPosts}}>
       { children }

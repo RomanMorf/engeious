@@ -1,28 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import './style.scss'
 import usePost from '../../hooks/Posts';
+import useUser from '../../hooks/Users';
 import { useModalState } from '../../context/Modal';
 import ModalConfirm from '../ModalConfirm' 
 
 function EditorModal(props) {
   const {showModal, setShowModal} = useModalState()
   const { deletePost, updatePost } = usePost()
+  const {createUser, deleteUser, updateUser} = useUser()
+  const [current, setCurrent] = useState()
 
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
   const [showConfirmUpdate, setShowConfirmUpdate] = useState(false)
   const [confirmText, setConfirmText] = useState('')
-  const [currentPost, setCurrentPost] = useState()
 
   useEffect(() => {
-    setCurrentPost(props.post)
-  }, [props.post]);
-
-  useEffect(() => {
-    return ()=> {
-      setShowConfirmDelete(false)
-      setShowConfirmUpdate(false)
-    }
-  }, [])
+    if ( props.post) setCurrent(props.post)
+    if ( props.user) setCurrent(props.user)
+  }, []);
 
   function closeModalFunc(event) {
     if (event.target.className === 'modal_wrapper' || event.target.className === 'modal_close' || event.target.className === 'modal_btn close' ) {
@@ -31,29 +27,48 @@ function EditorModal(props) {
   }
 
   function updatePostFunc() {
-    setConfirmText(`Are you sure, that you want update this post`)
+    props.post 
+    ? setConfirmText(`Are you sure, that you want update this post`)
+    : setConfirmText(`Are you sure, that you want update info for this user`)
+
     setShowConfirmUpdate(true)
   }
 
   function deletePostFunc() {
-    setConfirmText(`Are you sure, that you want delete post "${currentPost.title}"`)
+    props.post 
+    ? setConfirmText(`Are you sure, that you want delete post "${current.title}" ?`)
+    : setConfirmText(`Are you sure, that you want delete this user "${current.name}" ?`)
+
     setShowConfirmDelete(true)
   }
 
   function inputHandle (e) {
-    if (e.target.attributes['data-title']) {
-      const newPost = {
-        ...currentPost,
-        title: e.target.value
-      }
-      setCurrentPost(newPost)
-    }
-    if (e.target.attributes['data-body']) {
-      const newPost = {
-        ...currentPost,
+    let newPost = {}
+    switch (e.target.attributes['data-post'].nodeValue) {
+      case 'userId':
+        newPost = {
+          ...current,
+          userId: parseInt(e.target.value)
+        }
+        setCurrent(newPost)
+        break;
+      case 'title':
+        newPost = {
+          ...current,
+          title: e.target.value
+        }
+        setCurrent(newPost)
+        break;
+      case 'body':
+      newPost = {
+        ...current,
         body: e.target.value
       }
-      setCurrentPost(newPost)
+      setCurrent(newPost)        
+      break;
+      default:
+        console.log('Unhaldle target.attributes');
+        break;
     }
   }
 
@@ -64,7 +79,10 @@ function EditorModal(props) {
           onClose={ () => setShowConfirmDelete(false)} 
           text={confirmText}
         >
-          <button className='confirm_btn' onClick={() => deletePost(currentPost.id)}>Delete</button>
+          {props.post
+            ? <button className='confirm_btn' onClick={() => deletePost(current.id)}>Delete</button>
+            : <button className='confirm_btn' onClick={() => deleteUser(current.id)}>Delete</button>
+          }
           <button className='confirm_btn' onClick={() => setShowConfirmDelete(false)}>Cancel</button>
         </ModalConfirm>
       }
@@ -73,7 +91,10 @@ function EditorModal(props) {
           onClose={ () => setShowConfirmUpdate(false)} 
           text={confirmText}
         >
-          <button className='confirm_btn' onClick={() => updatePost(currentPost)}>Update</button>
+          {props.post
+            ? <button className='confirm_btn' onClick={() => updatePost(current)}>Update</button>
+            : <button className='confirm_btn' onClick={() => updateUser(current)}>Update</button>
+          }
           <button className='confirm_btn' onClick={() => setShowConfirmUpdate(false)}>Cancel</button>
         </ModalConfirm>
       }
@@ -85,12 +106,12 @@ function EditorModal(props) {
           </div> 
 
           <div className='modal_main'>
-            <p>{props.post.userId} - UserId</p>
-            <p>{props.post.id} - Id</p>
-            <h4>{props.post.title}</h4>
-            {currentPost && <input className='modal_input' type="text" value={currentPost.title} data-title onChange={(e) => inputHandle(e)}/>}
-            <p className='modal_text'>{props.post.body}</p>
-            {currentPost && <input className='modal_input' type="text" value={currentPost.body} data-body onChange={(e) => inputHandle(e)}/>}
+            <p>Autor Id:</p>
+            {current && <input className='modal_input' type="number" value={current.userId} data-post='userId' onChange={(e) => inputHandle(e)}/>}
+            <h4>Title:</h4>
+            {current && <input className='modal_input' type="text" value={current.title} data-post='title' onChange={(e) => inputHandle(e)}/>}
+            <p className='modal_text'>Post text:</p>
+            {current && <input className='modal_input' type="text" value={current.body} data-post='body' onChange={(e) => inputHandle(e)}/>}
           </div>
 
           <div className='modal_footer'>
