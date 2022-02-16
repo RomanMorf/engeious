@@ -17,7 +17,7 @@
     background-color: #fff;
     border-radius: 10px;
     position: relative;
-    min-width: 30%;
+    min-width: 500px;
     max-width: 700px;
   }
 
@@ -49,6 +49,7 @@
   }
 
   &_btn {
+    padding: 5px;
     border: none;
     border-radius: 3px;
     background-color: rgba(168, 124, 83, 0.877);
@@ -66,11 +67,25 @@
     padding: 5px;
     font-size: 16px;
     border: none;
-    border-bottom: 1px solid #000;
-    outline: none;
+    border-bottom: 1px solid rgb(114, 114, 114);
     margin-bottom: 3px;
+    outline: transparent;
+
     &:focus {
-      border-bottom: 2px solid #000;
+      border-bottom: 1px solid rgb(14, 2, 233);
+    }
+  }
+  
+  &_textarea {
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid rgb(114, 114, 114);
+    outline: transparent;
+
+    &:focus {
+      border-bottom: 1px solid rgb(14, 2, 233);
     }
   }
 }

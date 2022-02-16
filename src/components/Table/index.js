@@ -1,11 +1,23 @@
 import React from 'react';
 import './style.scss'
+import useUser from '../../hooks/Users';
+import EditorModal from '../EditorModal';
+import { useModalState } from '../../context/Modal';
 
 function Table ({users}) {
-  console.log(users, 'users from Table');
+  const { showModal, setShowModal } = useModalState(false)
+  const { 
+    currentUser,
+    setCurrentUser } = useUser()
+
+  function chooseCurrentUser(user) {
+    setCurrentUser(user)
+    setShowModal(true)
+  }
 
   return (
     <>
+      {showModal && <EditorModal user={currentUser} type={'user'} closeModal={() => setShowModal(false)}/> }
       <table>
         <thead>
           <tr>
@@ -21,7 +33,7 @@ function Table ({users}) {
         <tbody>
           {users && users.map((user, index) => {
             return (
-              <tr key={ user.id }>
+              <tr key={ user.id } onClick={() => chooseCurrentUser(user)}>
                 <td>{ index + 1 }</td>
                 <td>{ user.username }</td>
                 <td>{ user.name }</td>

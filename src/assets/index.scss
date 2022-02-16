@@ -10,3 +10,17 @@ body {
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
+
+.btn {
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
+  background-color: rgba(168, 124, 83, 0.877);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all .3s ease;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
+  }
+}
