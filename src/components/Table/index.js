@@ -37,20 +37,18 @@ function Table () {
             <td>post created</td>
             <td>email</td>
             <td>website</td>
-            <td>company</td>
           </tr>
         </thead>
         <tbody>
           {currentItems && currentItems.map( user => {
             return (
               <tr key={ user.id } onClick={() => chooseCurrentUser(user)}>
-                <td>{ user.id }</td>
-                <td>{ user.username }</td>
-                <td>{ user.name }</td>
+                <td>{ user.id || '' }</td>
+                <td>{ user.username || '' }</td>
+                <td>{ user.name || '' }</td>
                 <td> -= number =-</td>
-                <td>{ user.email }</td>
-                <td>{ user.website }</td>
-                <td>{ user.company.name }</td>
+                <td>{ user.email || '' }</td>
+                <td>{ user.website || '' }</td>
               </tr>
             )
           })}

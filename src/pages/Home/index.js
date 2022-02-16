@@ -4,7 +4,6 @@ import { Post } from '../../components/Post';
 import EditorModal from '../../components/EditorModal';
 import usePost from '../../hooks/Posts';
 import useUser from '../../hooks/Users';
-import { useModalState } from '../../context/Modal';
 import { usePostState } from '../../context/Posts';
 import { useUserState } from '../../context/Users';
 import Loader from '../../components/Loader';
@@ -18,12 +17,6 @@ function Home() {
   const { users, setUsers } = useUserState()
 
   const [ isLoading, setIsLoading ] = useState(true)
-  // const [ newPost, setNewPost ] = useState({
-  //   id: Date.now(),
-  //   title: '',
-  //   body: '',
-  //   userId: '',
-  // })
 
   const { currentPost, setCurrentPost, fetchPosts } = usePost()
   const { fetchUsers } = useUser()
