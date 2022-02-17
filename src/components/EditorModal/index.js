@@ -48,7 +48,6 @@ function EditorModal(props) {
     props.post 
       ? createPost(current)
       : createUser(current)
-    console.log(current, 'create new user');
     setShowConfirmCreate(false)
     props.closeModal()
   }
@@ -70,7 +69,6 @@ function EditorModal(props) {
     setCurrent(newData)    
   }
 
-  console.log(props.user);
   return (
     <>
       {showConfirmDelete && 

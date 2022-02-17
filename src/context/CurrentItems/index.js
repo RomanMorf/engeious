@@ -15,7 +15,7 @@ function CurrentItemsContextProvider({children}) {
 function useCurrentItemsState() {
   const context = React.useContext(CurrentItemsContext)
   if (context === undefined) { 
-    throw new Error('must be use width PostContextProvider')
+    throw new Error('must be use width CurrentItemsContext')
   }
   return context
 }

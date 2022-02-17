@@ -9,6 +9,7 @@ import Loader from '../../components/Loader';
 import PostMaper from '../../components/PostMaper';
 import Paginated from '../../components/Paginated';
 import { CurrentItemsContextProvider } from '../../context/CurrentItems';
+import SearchBar from '../../components/SearchBar';
 
 function Home() {
   const [ showModal, setShowModal ] = useState()
@@ -16,6 +17,7 @@ function Home() {
   const { users, setUsers } = useUserState()
 
   const [ isLoading, setIsLoading ] = useState(true)
+  const [ filteredItems, setFilteredItems ] = useState([])
 
   const { currentPost, setCurrentPost, fetchPosts } = usePost()
   const { fetchUsers } = useUser()
@@ -45,6 +47,12 @@ function Home() {
     setShowModal(false)
   }
 
+  function onSearchHandle(items) {
+    setFilteredItems(items)
+    console.log(items.length);
+  }
+
+
   return (
     <div className='home'>
       {showModal && 
@@ -55,7 +63,9 @@ function Home() {
         />
       }
 
-      <button className='btn' onClick={ () => createNewPost() }>New Post</button>
+      {posts && <SearchBar items={posts} onSearch={onSearchHandle} post />}
+
+      <button className='btn' onClick={ () => createNewPost() }>Create new Post</button>
 
       {isLoading && <Loader/>}
 
@@ -63,7 +73,7 @@ function Home() {
         <>
           <CurrentItemsContextProvider>
             <PostMaper users={users}/>
-            <Paginated items={posts} itemsPerPage={6} />
+            <Paginated items={filteredItems} itemsPerPage={6} />
           </CurrentItemsContextProvider>
         </>
       }

@@ -36,12 +36,19 @@ function usePost() {
     }
   }
 
+  const createPost = (post) => {
+    posts.push(post)
+    setPosts(posts)
+    setShowModal(false)
+  }
+
   return {
     currentPost,
     setCurrentPost,
 
     deletePost,
     updatePost,
+    createPost,
 
     fetchPosts,
   }
