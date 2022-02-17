@@ -10,13 +10,13 @@ function NavBar() {
         <li className='nav_item'>
           <NavLink 
             className="nav_link"
-            to="/"
+            to="/engeious/"
             activeclassname="active"
           >Posts</NavLink>
         </li>
         <li className='nav_item'>
           <NavLink 
-            to="/users" 
+            to="/engeious/users" 
             className="nav_link"
             activeclassname="active"
           >Users</NavLink>

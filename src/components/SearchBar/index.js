@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './style.scss'
+import { useModalState } from '../../context/Modal';
 
-function SearchBar({ items, onSearch, post }) {
+function SearchBar({ items, onSearch, post, user }) {
+  const { showModal } = useModalState()
+
   const [ filtered, setFiletred ] = useState('');
 
   useEffect(() => {
     setFiletred(items)
     onSearch(items)
   }, []);
+
+  useEffect(() => {
+    onSearch(filtered)
+  }, [filtered])
 
   function searchHandle(e) {
     const str = (e.target.value).toLowerCase()
@@ -19,24 +26,21 @@ function SearchBar({ items, onSearch, post }) {
     
     if (post) {
       filteredItems = items.filter((item) => {
-        return item.title.includes(str)
-          || item.body.includes(str)
+        return item.title.toLowerCase().includes(str)
+          || item.body.toLowerCase().includes(str)
       })
 
-    } else {
-      console.log('user from search');
+    } 
+    if (user) {
       filteredItems = items.filter((item) => {
-        return item.name.includes(str)
-          || item.username.includes(str)
-          || item.email.includes(str)
-          || item.website.includes(str)
+        return item.name.toLowerCase().includes(str)
+          || item.username.toLowerCase().includes(str)
+          || item.email.toLowerCase().includes(str)
+          || item.website.toLowerCase().includes(str)
       })
     }
 
-
     setFiletred(filteredItems)
-
-    onSearch(filtered)
   }
 
 
