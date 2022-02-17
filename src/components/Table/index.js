@@ -8,9 +8,9 @@ import { useModalState } from '../../context/Modal';
 import EditorModal from '../EditorModal';
 import useUser from '../../hooks/Users';
 
-function Table () {
+function Table ({users}) {
   const { showModal, setShowModal } = useModalState()
-  const { users } = useUserState()
+  // const { users } = useUserState()
   const { currentItems } = useCurrentItemsState(null)
   const { currentUser, setCurrentUser } = useUser()
 

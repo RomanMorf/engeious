@@ -24,6 +24,7 @@ function SearchBar({ items, onSearch, post }) {
       })
 
     } else {
+      console.log('user from search');
       filteredItems = items.filter((item) => {
         return item.name.includes(str)
           || item.username.includes(str)

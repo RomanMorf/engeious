@@ -1,8 +1,10 @@
 table {
   margin: 10px 0;
-  border-radius: 15px;
   overflow: hidden;
   width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgb(162, 162, 162);
+
   
   td {
     padding: 3px;
@@ -10,7 +12,7 @@ table {
 
   thead {
     tr {
-      background-color: rgb(112, 158, 218);
+      background-color: rgba(168, 124, 83, 0.877);
     }
     td {
       padding: 10px;
@@ -28,5 +30,4 @@ table {
       cursor: pointer;
     }
   }
-
 }

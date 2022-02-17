@@ -49,9 +49,7 @@ function Home() {
 
   function onSearchHandle(items) {
     setFilteredItems(items)
-    console.log(items.length);
   }
-
 
   return (
     <div className='home'>

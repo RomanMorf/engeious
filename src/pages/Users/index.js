@@ -5,9 +5,12 @@ import useUser from '../../hooks/Users';
 import Table from '../../components/Table';
 import { CurrentItemsContextProvider } from '../../context/CurrentItems';
 import EditorModal from '../../components/EditorModal';
+import SearchBar from '../../components/SearchBar';
 
 function Users() {
   const [ showModal, setShowModal ] = useState()
+  const [ filteredItems, setFilteredItems ] = useState([])
+
   const { users } = useUserState()
   const { fetchUsers, currentUser, setCurrentUser } = useUser()
 
@@ -32,7 +35,9 @@ function Users() {
     setShowModal(true)
   }
 
-
+  function onSearchHandle(items) {
+    setFilteredItems(items)
+  }
 
   return (
     <div className='users'>
@@ -43,11 +48,13 @@ function Users() {
           closeModal={closeModalFunc}
         />
       }
-      <button className='btn' onClick={ () => createNewUser() }>New User</button>
 
+      {users && <SearchBar items={users} onSearch={onSearchHandle} user />}
+
+      <button className='btn' onClick={ () => createNewUser() }>Create new User</button>
 
       <CurrentItemsContextProvider>
-        { users && <Table users={users} /> }
+        { users && <Table users={filteredItems} /> }
       </CurrentItemsContextProvider>
     </div>
   )

@@ -24,22 +24,24 @@ function Paginated({ itemsPerPage, items }) {
 
   return (
     <>
-      <ReactPaginate
-        breakLabel="..."
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        pageCount={pageCount}
-        nextLabel="Next"
-        previousLabel="Previous"
-        renderOnZeroPageCount={null}
+      {pageCount > 1 && 
+        <ReactPaginate
+          breakLabel="..."
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          pageCount={pageCount}
+          nextLabel="Next"
+          previousLabel="Previous"
+          renderOnZeroPageCount={null}
 
-        className="paginate"
-        pageClassName="paginate_link"
-        previousClassName="paginate_btn"
-        nextClassName="paginate_btn"
-        disabledClassName="paginate_disable"
-        activeClassName="paginate_active"
-      />
+          className="paginate"
+          pageClassName="paginate_link"
+          previousClassName="paginate_btn"
+          nextClassName="paginate_btn"
+          disabledClassName="paginate_disable"
+          activeClassName="paginate_active"
+        />
+      }
     </>
   );
 }
