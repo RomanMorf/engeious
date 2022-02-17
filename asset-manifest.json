@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/engeious/static/css/main.e651e746.css",
-    "main.js": "/engeious/static/js/main.08c0ddca.js",
-    "index.html": "/engeious/index.html",
-    "main.e651e746.css.map": "/engeious/static/css/main.e651e746.css.map",
-    "main.08c0ddca.js.map": "/engeious/static/js/main.08c0ddca.js.map"
+    "main.css": "https://romanmorf.github.io/engeious/static/css/main.e651e746.css",
+    "main.js": "https://romanmorf.github.io/engeious/static/js/main.08c0ddca.js",
+    "index.html": "https://romanmorf.github.io/engeious/index.html",
+    "main.e651e746.css.map": "https://romanmorf.github.io/engeious/static/css/main.e651e746.css.map",
+    "main.08c0ddca.js.map": "https://romanmorf.github.io/engeious/static/js/main.08c0ddca.js.map"
   },
   "entrypoints": [
     "static/css/main.e651e746.css",
